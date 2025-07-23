@@ -9,7 +9,7 @@ const std = @import("std");
 //   - const u8: 指向常量字节的指针 | const u8: Pointer to constant bytes
 //   - 这等价于 C 中的 const char* | This is equivalent to const char* in C
 extern fn rust_hello_world() [*:0]const u8;
-extern fn rust_free_string(ptr: [*:0]u8);
+extern fn rust_free_string(ptr: [*:0]u8) void;
 
 // 主函数 | Main function
 // !void: 表示函数可能返回错误或 void | !void: Indicates function may return error or void

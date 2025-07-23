@@ -11,8 +11,9 @@
 - 🚀 **HTTP Methods Support** | **HTTP 方法支持** | **HTTPメソッドサポート**: GET, POST, PUT, DELETE and more | GET、POST、PUT、DELETE 等 | GET、POST、PUT、DELETE など
 - 📦 **Request Body Processing** | **请求体处理** | **リクエストボディ処理**: Full POST data and JSON support | 完整的 POST 数据和 JSON 支持 | 完全なPOSTデータとJSONサポート
 - 🛣️ **Dynamic Routing** | **动态路由** | **動的ルーティング**: Flexible route registration system | 灵活的路由注册系统 | 柔軟なルート登録システム
+- 🛡️ **Middleware System** | **中间件系统** | **ミドルウェアシステム**: CORS, Authentication, Logging, Rate Limiting | CORS、认证、日志、限流 | CORS、認証、ログ、レート制限
 - ⚡ **High Performance** | **高性能** | **高性能**: Powered by Rust's actix-web framework | 基于 Rust 的 actix-web 框架 | RustのActix-webフレームワークを使用
-- 🔒 **Memory Safe** | **内存安全** | **メモリ安全**: Rust's ownership model ensures safety | Rust 的所有权模型确保安全性 | Rustの所有権モデルが安全性を保証
+- 🔒 **Memory Safe** | **内存安全** | **メモリ安全**: Rust's ownership model ensures safety | Rust 的所有权模型确保安全性 | Rustの所有権モモデルが安全性を保証
 - 🌐 **Cross-Platform** | **跨平台** | **クロスプラットフォーム**: Works on Windows, macOS, and Linux | 支持 Windows、macOS 和 Linux | Windows、macOS、Linuxで動作
 
 ## 🎯 Current Status | 当前状态 | 現在の状況
@@ -30,13 +31,20 @@ This is a **complete web framework** that demonstrates how to build modern web a
 ```
 hush_demo/
 ├── src/
+│   ├── core/               # Core framework modules | 核心框架模块 | コアフレームワークモジュール
+│   ├── web/                # Web server components | Web 服务器组件 | Webサーバーコンポーネント
+│   ├── middleware/         # Middleware system | 中间件系统 | ミドルウェアシステム
 │   ├── lib.rs              # Rust web framework core | Rust Web 框架核心 | Rust Webフレームワークコア
 │   └── main.rs             # Rust main (unused) | Rust 主程序（未使用） | Rustメイン（未使用）
 ├── zig-test/
 │   ├── main.zig            # Basic FFI demo | 基本 FFI 演示 | 基本FFIデモ
-│   └── web_test.zig        # Web application | Web 应用程序 | Webアプリケーション
+│   ├── web_test.zig        # Web application | Web 应用程序 | Webアプリケーション
+│   ├── middleware.zig      # Middleware wrapper | 中间件封装 | ミドルウェアラッパー
+│   ├── middleware_example.zig # Middleware usage example | 中间件使用示例 | ミドルウェア使用例
+│   └── middleware_test.zig # Middleware tests | 中间件测试 | ミドルウェアテスト
 ├── build.zig               # Zig build configuration | Zig 构建配置 | Zigビルド設定
 ├── build.sh                # One-click build script | 一键构建脚本 | ワンクリックビルドスクリプト
+├── build_middleware_test.sh # Middleware build script | 中间件构建脚本 | ミドルウェアビルドスクリプト
 ├── Cargo.toml              # Rust dependencies | Rust 依赖配置 | Rust依存関係
 └── README.md               # This documentation | 本文档 | このドキュメント
 ```
@@ -67,8 +75,13 @@ hush_demo/
 #### One-Click Build | 一键构建 | ワンクリックビルド
 
 ```bash
+# Basic web server | 基础 Web 服务器 | 基本Webサーバー
 ./build.sh
 ./web_test
+
+# Middleware-enhanced server | 中间件增强服务器 | ミドルウェア強化サーバー
+./build_middleware_test.sh
+./middleware_example
 ```
 
 #### Manual Build | 手动构建 | 手動ビルド
@@ -177,6 +190,80 @@ This framework demonstrates a **layered architecture** where:
    - Route handler functions | 路由处理函数 | ルートハンドラ関数
    - JSON processing and responses | JSON 处理和响应 | JSON処理とレスポンス
 
+## 🛡️ Middleware System | 中间件系统 | ミドルウェアシステム
+
+Hush framework includes a powerful middleware system that allows you to add cross-cutting concerns like authentication, logging, CORS, and rate limiting to your web applications.
+
+Hush 框架包含一个强大的中间件系统，允许您为 Web 应用程序添加认证、日志、CORS 和限流等横切关注点。
+
+Hushフレームワークには、認証、ログ、CORS、レート制限などの横断的関心事をWebアプリケーションに追加できる強力なミドルウェアシステムが含まれています。
+
+### Built-in Middleware | 内置中间件 | 内蔵ミドルウェア
+
+- 📝 **Logger Middleware** | **日志中间件** | **ログミドルウェア**: Request/response logging with timing | 带时间的请求/响应日志 | タイミング付きリクエスト/レスポンスログ
+- 🌐 **CORS Middleware** | **CORS 中间件** | **CORSミドルウェア**: Cross-origin resource sharing | 跨域资源共享 | クロスオリジンリソース共有
+- 🔐 **JWT Auth Middleware** | **JWT 认证中间件** | **JWT認証ミドルウェア**: Token-based authentication | 基于令牌的认证 | トークンベース認証
+- 🚦 **Rate Limiting** | **限流中间件** | **レート制限**: Prevent abuse and overload | 防止滥用和过载 | 乱用と過負荷を防止
+
+### Using Middleware in Zig | 在 Zig 中使用中间件 | ZigでのミドルウェアUsage
+
+```zig
+const middleware = @import("middleware.zig");
+
+// Create middleware chain | 创建中间件链 | ミドルウェアチェーンを作成
+var chain = try middleware.MiddlewareChain.init(allocator);
+defer chain.deinit();
+
+// Add built-in middleware | 添加内置中间件 | 内蔵ミドルウェアを追加
+try chain.addLogger();                    // Request logging | 请求日志 | リクエストログ
+try chain.addCors("*");                   // CORS support | CORS 支持 | CORSサポート
+try chain.addAuthJwt("my_secret_key");    // JWT authentication | JWT 认证 | JWT認証
+
+// Execute middleware chain | 执行中间件链 | ミドルウェアチェーンを実行
+const result = try chain.execute("GET", "/api/users", "");
+defer allocator.free(result);
+```
+
+### Middleware-Enhanced Route Handlers | 中间件增强的路由处理器 | ミドルウェア強化ルートハンドラ
+
+```zig
+export fn protected_api_handler(method: [*:0]const u8, path: [*:0]const u8, body: [*:0]const u8) callconv(.C) [*:0]const u8 {
+    const method_str = std.mem.span(method);
+    const path_str = std.mem.span(path);
+    const body_str = std.mem.span(body);
+
+    // Execute middleware chain | 执行中间件链 | ミドルウェアチェーンを実行
+    if (global_middleware_chain) |*chain| {
+        const middleware_result = chain.execute(method_str, path_str, body_str) catch {
+            return createErrorResponse("Middleware execution failed");
+        };
+        defer global_allocator.free(middleware_result);
+
+        // Check authentication | 检查认证 | 認証をチェック
+        if (std.mem.indexOf(u8, middleware_result, "Unauthorized") != null) {
+            return createResponse("{\"error\":\"Authentication required\",\"status\":401}");
+        }
+    }
+
+    // Your business logic here | 您的业务逻辑 | ビジネスロジック
+    // ...
+}
+```
+
+### Testing Middleware | 测试中间件 | ミドルウェアテスト
+
+```bash
+# Run middleware tests | 运行中间件测试 | ミドルウェアテストを実行
+./middleware_test
+
+# Test protected endpoints | 测试受保护端点 | 保護されたエンドポイントをテスト
+curl -H "Authorization: Bearer valid_token_12345" \
+     http://127.0.0.1:8080/api/protected
+
+# Test CORS preflight | 测试 CORS 预检 | CORS プリフライトをテスト
+curl -X OPTIONS http://127.0.0.1:8080/api/users
+```
+
 ## 🔧 Adding New Routes | 添加新路由 | 新しいルートの追加
 
 To add new web endpoints to your application:
@@ -252,6 +339,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ **Request Body Processing** | **请求体处理** | **リクエストボディ処理**: Full POST data support | 完整的 POST 数据支持 | 完全なPOSTデータサポート
 - ✅ **Dynamic Routing System** | **动态路由系统** | **動的ルーティングシステム**: Flexible route registration | 灵活的路由注册 | 柔軟なルート登録
 - ✅ **JSON API Support** | **JSON API 支持** | **JSON APIサポート**: Modern API endpoints | 现代化 API 端点 | モダンなAPIエンドポイント
+- ✅ **Middleware System** | **中间件系统** | **ミドルウェアシステム**: Authentication, logging, CORS, rate limiting | 认证、日志、CORS、限流 | 認証、ログ、CORS、レート制限
 - ✅ **Cross-Platform Build** | **跨平台构建** | **クロスプラットフォームビルド**: Windows, macOS, Linux | Windows、macOS、Linux | Windows、macOS、Linux
 - ✅ **Comprehensive Documentation** | **完整文档** | **包括的なドキュメント**: Multi-language comments | 多语言注释 | 多言語コメント
 
@@ -262,7 +350,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 📋 Planned | 计划中 | 計画中
 
-- 🎯 **Middleware Support** | **中间件支持** | **ミドルウェアサポート**: Authentication, logging, CORS | 认证、日志、CORS | 認証、ログ、CORS
 - 🎯 **Database Integration** | **数据库集成** | **データベース統合**: SQL and NoSQL support | SQL 和 NoSQL 支持 | SQLとNoSQLサポート
 - 🎯 **WebSocket Support** | **WebSocket 支持** | **WebSocketサポート**: Real-time communication | 实时通信 | リアルタイム通信
 - 🎯 **Template Engine** | **模板引擎** | **テンプレートエンジン**: HTML rendering | HTML 渲染 | HTMLレンダリング
