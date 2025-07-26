@@ -58,6 +58,7 @@ pub enum HttpStatus {
     Forbidden = 403,
     NotFound = 404,
     MethodNotAllowed = 405,
+    TooManyRequests = 429,
     InternalServerError = 500,
     NotImplemented = 501,
     ServiceUnavailable = 503,
@@ -78,6 +79,7 @@ impl HttpStatus {
             HttpStatus::Forbidden => "Forbidden",
             HttpStatus::NotFound => "Not Found",
             HttpStatus::MethodNotAllowed => "Method Not Allowed",
+            HttpStatus::TooManyRequests => "Too Many Requests",
             HttpStatus::InternalServerError => "Internal Server Error",
             HttpStatus::NotImplemented => "Not Implemented",
             HttpStatus::ServiceUnavailable => "Service Unavailable",
@@ -187,6 +189,10 @@ impl ResponseContext {
     
     pub fn add_header(&mut self, key: String, value: String) {
         self.headers.insert(key, value);
+    }
+    
+    pub fn get_header(&self, key: &str) -> Option<&String> {
+        self.headers.get(key)
     }
     
     pub fn set_body(&mut self, body: Vec<u8>) {

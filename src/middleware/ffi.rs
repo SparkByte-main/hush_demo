@@ -9,7 +9,7 @@ use crate::core::error::{HushError, set_last_error};
 use crate::core::ffi::{from_c_string, to_c_string};
 use crate::core::types::{RequestContext, ResponseContext, HttpMethod, HttpStatus};
 use super::core::{MiddlewareChain, MiddlewareContext, MiddlewareResult};
-use super::builtin::{CorsMiddleware, LoggerMiddleware, AuthMiddleware};
+use super::builtin::{CorsMiddleware, LoggerMiddleware, AuthMiddleware, RateLimitMiddleware};
 
 /// C 兼容的中间件处理函数类型
 pub type HushMiddlewareHandler = extern "C" fn(*mut HushRequestContext, *mut c_char) -> c_int;
@@ -272,6 +272,50 @@ pub extern "C" fn hush_middleware_add_logger(middleware: *mut HushMiddleware) {
     }
 }
 
+/// 添加基于IP的请求限流中间件
+#[unsafe(no_mangle)]
+pub extern "C" fn hush_middleware_add_rate_limit(
+    middleware: *mut HushMiddleware,
+    max_requests: u32,
+    window_seconds: u64,
+) {
+    if middleware.is_null() {
+        set_last_error(HushError::NullPointer);
+        return;
+    }
+    
+    unsafe {
+        let middleware_ref = &*middleware;
+        
+        if let Ok(mut chain) = middleware_ref.chain.lock() {
+            let rate_limit_middleware = RateLimitMiddleware::new(max_requests, window_seconds);
+            chain.add(rate_limit_middleware);
+        } else {
+            set_last_error(HushError::InternalError("Failed to lock middleware chain".to_string()));
+        }
+    }
+}
+
+/// 添加基于用户ID的请求限流中间件
+#[unsafe(no_mangle)]
+pub extern "C" fn hush_middleware_add_rate_limit_by_user(middleware: *mut HushMiddleware) {
+    if middleware.is_null() {
+        set_last_error(HushError::NullPointer);
+        return;
+    }
+    
+    unsafe {
+        let middleware_ref = &*middleware;
+        
+        if let Ok(mut chain) = middleware_ref.chain.lock() {
+            let rate_limit_middleware = RateLimitMiddleware::by_user_id();
+            chain.add(rate_limit_middleware);
+        } else {
+            set_last_error(HushError::InternalError("Failed to lock middleware chain".to_string()));
+        }
+    }
+}
+
 /// 执行中间件链
 #[unsafe(no_mangle)]
 pub extern "C" fn hush_middleware_execute(
@@ -471,6 +515,67 @@ mod tests {
         
         let count = hush_middleware_count(middleware);
         assert_eq!(count, 1);
+        
+        hush_middleware_free(middleware);
+    }
+    
+    #[test]
+    fn test_rate_limit_middleware_ffi() {
+        let middleware = hush_middleware_new();
+        assert!(!middleware.is_null());
+        
+        // 添加基于IP的限流中间件
+        hush_middleware_add_rate_limit(middleware, 10, 60);
+        
+        let count = hush_middleware_count(middleware);
+        assert_eq!(count, 1);
+        
+        hush_middleware_free(middleware);
+    }
+    
+    #[test]
+    fn test_rate_limit_by_user_middleware_ffi() {
+        let middleware = hush_middleware_new();
+        assert!(!middleware.is_null());
+        
+        // 添加基于用户ID的限流中间件
+        hush_middleware_add_rate_limit_by_user(middleware);
+        
+        let count = hush_middleware_count(middleware);
+        assert_eq!(count, 1);
+        
+        hush_middleware_free(middleware);
+    }
+    
+    #[test]
+    fn test_multiple_middleware_ffi() {
+        let middleware = hush_middleware_new();
+        assert!(!middleware.is_null());
+        
+        // 添加多个中间件
+        hush_middleware_add_logger(middleware);
+        
+        let origins = CString::new("*").unwrap();
+        hush_middleware_add_cors(middleware, origins.as_ptr());
+        
+        hush_middleware_add_rate_limit(middleware, 100, 3600);
+        
+        let secret = CString::new("test_secret").unwrap();
+        hush_middleware_add_auth_jwt(middleware, secret.as_ptr());
+        
+        let count = hush_middleware_count(middleware);
+        assert_eq!(count, 4);
+        
+        // 获取中间件名称列表
+        let names_ptr = hush_middleware_names(middleware);
+        assert!(!names_ptr.is_null());
+        
+        // 清理资源
+        if !names_ptr.is_null() {
+            unsafe {
+                let _ = CString::from_raw(names_ptr as *mut c_char);
+            }
+        }
         
         hush_middleware_free(middleware);
     }

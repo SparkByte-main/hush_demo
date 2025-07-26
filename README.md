@@ -1,363 +1,176 @@
-# Hush Demo | Hush 演示项目 | Hushデモプロジェクト
+# 🚀 Hush 框架
 
-**Hush** is a revolutionary web framework that combines Zig's performance with Rust's safety through FFI. Build high-performance web applications with Zig while leveraging Rust's mature ecosystem.
+一个高性能的 Web 框架，使用 Rust 构建核心，提供 Zig 语言接口。
 
-**Hush** 是一个革命性的 Web 框架，通过 FFI 将 Zig 的性能与 Rust 的安全性相结合。使用 Zig 构建高性能 Web 应用程序，同时利用 Rust 成熟的生态系统。
+## ✨ 特性
 
-**Hush** は、FFIを通じてZigのパフォーマンスとRustの安全性を組み合わせた革新的なWebフレームワークです。Rustの成熟したエコシステムを活用しながら、Zigで高性能なWebアプリケーションを構築できます。
+- **🚀 高性能**: Rust 核心确保最大速度
+- **🛡️ 内存安全**: 利用 Rust 的内存安全保证
+- **🔧 简洁 API**: 清晰的 Zig 接口，易于使用
+- **🌐 跨平台**: 支持 macOS、Linux 和 Windows
+- **🔌 中间件系统**: 完整的可插拔中间件架构
+- **🔐 安全特性**: 内置 CORS、JWT 认证、请求限流
+- **📊 监控支持**: 详细的请求日志和性能追踪
 
-## ✨ Features | 特性 | 機能
+## 🏁 快速开始
 
-- 🚀 **HTTP Methods Support** | **HTTP 方法支持** | **HTTPメソッドサポート**: GET, POST, PUT, DELETE and more | GET、POST、PUT、DELETE 等 | GET、POST、PUT、DELETE など
-- 📦 **Request Body Processing** | **请求体处理** | **リクエストボディ処理**: Full POST data and JSON support | 完整的 POST 数据和 JSON 支持 | 完全なPOSTデータとJSONサポート
-- 🛣️ **Dynamic Routing** | **动态路由** | **動的ルーティング**: Flexible route registration system | 灵活的路由注册系统 | 柔軟なルート登録システム
-- 🛡️ **Middleware System** | **中间件系统** | **ミドルウェアシステム**: CORS, Authentication, Logging, Rate Limiting | CORS、认证、日志、限流 | CORS、認証、ログ、レート制限
-- ⚡ **High Performance** | **高性能** | **高性能**: Powered by Rust's actix-web framework | 基于 Rust 的 actix-web 框架 | RustのActix-webフレームワークを使用
-- 🔒 **Memory Safe** | **内存安全** | **メモリ安全**: Rust's ownership model ensures safety | Rust 的所有权模型确保安全性 | Rustの所有権モモデルが安全性を保証
-- 🌐 **Cross-Platform** | **跨平台** | **クロスプラットフォーム**: Works on Windows, macOS, and Linux | 支持 Windows、macOS 和 Linux | Windows、macOS、Linuxで動作
+### 环境要求
 
-## 🎯 Current Status | 当前状态 | 現在の状況
+- **Rust**: 1.70+ (推荐使用 rustup)
+- **Zig**: 0.11+ (从官网下载或使用包管理器)
 
-✅ **Fully Functional Web Framework** | **完全功能的 Web 框架** | **完全に機能するWebフレームワーク**
-
-This is a **complete web framework** that demonstrates how to build modern web applications using Zig for business logic and Rust for the underlying web infrastructure.
-
-这是一个**完整的 Web 框架**，演示如何使用 Zig 编写业务逻辑，使用 Rust 构建底层 Web 基础设施来构建现代 Web 应用程序。
-
-これは**完全なWebフレームワーク**で、ビジネスロジックにZig、基盤となるWebインフラストラクチャにRustを使用して、モダンなWebアプリケーションを構築する方法を実演しています。
-
-## 📁 Project Structure | 项目结构 | プロジェクト構造
-
-```
-hush_demo/
-├── src/
-│   ├── core/               # Core framework modules | 核心框架模块 | コアフレームワークモジュール
-│   ├── web/                # Web server components | Web 服务器组件 | Webサーバーコンポーネント
-│   ├── middleware/         # Middleware system | 中间件系统 | ミドルウェアシステム
-│   ├── lib.rs              # Rust web framework core | Rust Web 框架核心 | Rust Webフレームワークコア
-│   └── main.rs             # Rust main (unused) | Rust 主程序（未使用） | Rustメイン（未使用）
-├── zig-test/
-│   ├── main.zig            # Basic FFI demo | 基本 FFI 演示 | 基本FFIデモ
-│   ├── web_test.zig        # Web application | Web 应用程序 | Webアプリケーション
-│   ├── middleware.zig      # Middleware wrapper | 中间件封装 | ミドルウェアラッパー
-│   ├── middleware_example.zig # Middleware usage example | 中间件使用示例 | ミドルウェア使用例
-│   └── middleware_test.zig # Middleware tests | 中间件测试 | ミドルウェアテスト
-├── build.zig               # Zig build configuration | Zig 构建配置 | Zigビルド設定
-├── build.sh                # One-click build script | 一键构建脚本 | ワンクリックビルドスクリプト
-├── build_middleware_test.sh # Middleware build script | 中间件构建脚本 | ミドルウェアビルドスクリプト
-├── Cargo.toml              # Rust dependencies | Rust 依赖配置 | Rust依存関係
-└── README.md               # This documentation | 本文档 | このドキュメント
-```
-
-## Quick Start | 快速开始
-
-### Prerequisites | 前置要求
-
-- **Rust** (latest stable) | **Rust**（最新稳定版）
-- **Zig** (0.11.0 or later) | **Zig**（0.11.0 或更高版本）
-- **Cargo** (comes with Rust) | **Cargo**（随 Rust 安装）
-
-### Installation | 安装
-
-1. **Clone the repository | 克隆仓库**
-   ```bash
-   git clone <repository-url>
-   cd hush_demo
-   ```
-
-2. **Make build script executable | 使构建脚本可执行**
-   ```bash
-   chmod +x build.sh
-   ```
-
-### Building and Running | 构建和运行 | ビルドと実行
-
-#### One-Click Build | 一键构建 | ワンクリックビルド
+### 构建项目
 
 ```bash
-# Basic web server | 基础 Web 服务器 | 基本Webサーバー
-./build.sh
-./web_test
+# 克隆项目
+git clone <repository-url>
+cd hush_framework
 
-# Middleware-enhanced server | 中间件增强服务器 | ミドルウェア強化サーバー
-./build_middleware_test.sh
-./middleware_example
+# 构建 Rust 核心库
+./scripts/build.sh
+
+# 或者手动构建
+cargo build --release
 ```
 
-#### Manual Build | 手动构建 | 手動ビルド
+### 运行示例
 
 ```bash
-# Build Rust web framework | 构建 Rust Web 框架 | Rust Webフレームワークをビルド
-cargo build --lib
+# Web 服务器演示
+zig run examples/web_demo/main.zig -lc -L./target/debug -lhush_demo
 
-# Build Zig web application | 构建 Zig Web 应用 | Zig Webアプリケーションをビルド
-zig build-exe zig-test/web_test.zig -lhush_demo -L./target/debug
+# 中间件演示
+zig run examples/zig/middleware_demo.zig -lc -L./target/debug -lhush_demo
 
-# Start the web server | 启动 Web 服务器 | Webサーバーを起動
-./web_test
+# 基础使用示例
+zig run examples/zig/basic_usage.zig -lc -L./target/debug -lhush_demo
 ```
 
-### Expected Output | 预期输出 | 期待される出力
-
-```
-Creating Zig web application with Rust framework...
-Registering routes...
-Starting server on http://127.0.0.1:8080
-Routes available:
-  GET/POST / - Hello page (shows HTTP method and POST data)
-  GET/POST /about - About page (shows HTTP method and POST data)
-  GET /web_test_hello - Test page (shows HTTP method)
-  POST /api/users - API endpoint (accepts JSON data)
-Press Ctrl+C to stop
-Starting web framework server on port 8080
-```
-
-## 🧪 Testing the API | 测试 API | APIのテスト
-
-Once the server is running, you can test all endpoints:
-
-服务器运行后，您可以测试所有端点：
-
-サーバーが実行されたら、すべてのエンドポイントをテストできます：
-
-### Browser Testing | 浏览器测试 | ブラウザテスト
-
-Visit these URLs in your browser:
-
-在浏览器中访问这些 URL：
-
-ブラウザでこれらのURLにアクセス：
-
-- `http://127.0.0.1:8080/` - Hello page | 主页 | ホームページ
-- `http://127.0.0.1:8080/about` - About page | 关于页面 | Aboutページ
-- `http://127.0.0.1:8080/web_test_hello` - Test page | 测试页面 | テストページ
-
-### cURL Testing | cURL 测试 | cURLテスト
+### API 测试
 
 ```bash
-# GET requests | GET 请求 | GETリクエスト
-curl http://127.0.0.1:8080/
-curl http://127.0.0.1:8080/about
+# 运行完整的 API 测试套件
+./scripts/test_api.sh
 
-# POST requests with data | 带数据的 POST 请求 | データ付きPOSTリクエスト
-curl -X POST http://127.0.0.1:8080/ -d "Hello World"
-curl -X POST http://127.0.0.1:8080/about -d "username=admin&password=123"
-
-# JSON API endpoint | JSON API 端点 | JSON APIエンドポイント
-curl -X POST http://127.0.0.1:8080/api/users \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John","email":"john@example.com","age":25}'
+# 测试特定功能
+./scripts/test_api.sh -t health
 ```
 
-### Expected Responses | 预期响应 | 期待されるレスポンス
+## 🏗️ 项目结构
 
-**GET /** response:
 ```
-Hello from Zig! Method: GET
+hush_framework/
+├── 📁 src/                    # Rust 核心源码
+│   ├── core/                  # 核心功能模块
+│   ├── middleware/            # 中间件系统
+│   └── web/                   # Web 服务器模块
+├── 📁 examples/               # 示例代码
+│   ├── zig/                   # Zig 语言示例
+│   ├── web_demo/              # Web 演示应用
+│   └── clients/               # 客户端示例
+├── 📁 docs/                   # 文档目录
+├── 📁 scripts/                # 构建和测试脚本
+└── 📁 tests/                  # 测试文件
 ```
 
-**POST /** with data response:
-```
-Hello from Zig! Method: POST, POST Data: Hello World
-```
+详细的项目结构说明请查看 [项目结构文档](docs/PROJECT_STRUCTURE.md)。
 
-**POST /api/users** with JSON response:
-```json
-{"status":"success","message":"User created","method":"POST","received_data":"{\"name\":\"John\",\"email\":\"john@example.com\",\"age\":25}"}
-```
+## 🎯 API 概览
 
-## 🏗️ Architecture | 架构 | アーキテクチャ
-
-This framework demonstrates a **layered architecture** where:
-
-该框架展示了一个**分层架构**，其中：
-
-このフレームワークは**レイヤードアーキテクチャ**を実演しています：
-
-1. **Rust Framework Layer | Rust 框架层 | Rustフレームワーク層**:
-   - HTTP server management (actix-web) | HTTP 服务器管理 (actix-web) | HTTPサーバー管理 (actix-web)
-   - Request/response processing | 请求/响应处理 | リクエスト/レスポンス処理
-   - Route dispatching | 路由分发 | ルートディスパッチ
-   - Memory management | 内存管理 | メモリ管理
-
-2. **FFI Interface Layer | FFI 接口层 | FFIインターフェース層**:
-   - C-compatible function signatures | C 兼容函数签名 | C互換関数シグネチャ
-   - Data marshalling between languages | 语言间数据编组 | 言語間データマーシャリング
-   - Safe memory handling | 安全内存处理 | 安全なメモリ処理
-
-3. **Zig Application Layer | Zig 应用层 | Zigアプリケーション層**:
-   - Business logic implementation | 业务逻辑实现 | ビジネスロジック実装
-   - Route handler functions | 路由处理函数 | ルートハンドラ関数
-   - JSON processing and responses | JSON 处理和响应 | JSON処理とレスポンス
-
-## 🛡️ Middleware System | 中间件系统 | ミドルウェアシステム
-
-Hush framework includes a powerful middleware system that allows you to add cross-cutting concerns like authentication, logging, CORS, and rate limiting to your web applications.
-
-Hush 框架包含一个强大的中间件系统，允许您为 Web 应用程序添加认证、日志、CORS 和限流等横切关注点。
-
-Hushフレームワークには、認証、ログ、CORS、レート制限などの横断的関心事をWebアプリケーションに追加できる強力なミドルウェアシステムが含まれています。
-
-### Built-in Middleware | 内置中间件 | 内蔵ミドルウェア
-
-- 📝 **Logger Middleware** | **日志中间件** | **ログミドルウェア**: Request/response logging with timing | 带时间的请求/响应日志 | タイミング付きリクエスト/レスポンスログ
-- 🌐 **CORS Middleware** | **CORS 中间件** | **CORSミドルウェア**: Cross-origin resource sharing | 跨域资源共享 | クロスオリジンリソース共有
-- 🔐 **JWT Auth Middleware** | **JWT 认证中间件** | **JWT認証ミドルウェア**: Token-based authentication | 基于令牌的认证 | トークンベース認証
-- 🚦 **Rate Limiting** | **限流中间件** | **レート制限**: Prevent abuse and overload | 防止滥用和过载 | 乱用と過負荷を防止
-
-### Using Middleware in Zig | 在 Zig 中使用中间件 | ZigでのミドルウェアUsage
+### Web 服务器
 
 ```zig
-const middleware = @import("middleware.zig");
+// 创建服务器
+const server = web_server_new();
 
-// Create middleware chain | 创建中间件链 | ミドルウェアチェーンを作成
-var chain = try middleware.MiddlewareChain.init(allocator);
-defer chain.deinit();
+// 添加路由
+web_server_add_route(server, "GET", "/hello", hello_handler);
 
-// Add built-in middleware | 添加内置中间件 | 内蔵ミドルウェアを追加
-try chain.addLogger();                    // Request logging | 请求日志 | リクエストログ
-try chain.addCors("*");                   // CORS support | CORS 支持 | CORSサポート
-try chain.addAuthJwt("my_secret_key");    // JWT authentication | JWT 认证 | JWT認証
-
-// Execute middleware chain | 执行中间件链 | ミドルウェアチェーンを実行
-const result = try chain.execute("GET", "/api/users", "");
-defer allocator.free(result);
+// 启动服务器
+web_server_start(server, 8080);
 ```
 
-### Middleware-Enhanced Route Handlers | 中间件增强的路由处理器 | ミドルウェア強化ルートハンドラ
+### 中间件系统
 
 ```zig
-export fn protected_api_handler(method: [*:0]const u8, path: [*:0]const u8, body: [*:0]const u8) callconv(.C) [*:0]const u8 {
-    const method_str = std.mem.span(method);
-    const path_str = std.mem.span(path);
-    const body_str = std.mem.span(body);
+// 创建中间件链
+const middleware = hush_middleware_new();
 
-    // Execute middleware chain | 执行中间件链 | ミドルウェアチェーンを実行
-    if (global_middleware_chain) |*chain| {
-        const middleware_result = chain.execute(method_str, path_str, body_str) catch {
-            return createErrorResponse("Middleware execution failed");
-        };
-        defer global_allocator.free(middleware_result);
+// 添加内置中间件
+hush_middleware_add_logger(middleware);
+hush_middleware_add_cors(middleware, "https://example.com");
+hush_middleware_add_rate_limit(middleware, 100, 3600);
+hush_middleware_add_auth_jwt(middleware, "secret_key");
+```
 
-        // Check authentication | 检查认证 | 認証をチェック
-        if (std.mem.indexOf(u8, middleware_result, "Unauthorized") != null) {
-            return createResponse("{\"error\":\"Authentication required\",\"status\":401}");
-        }
-    }
+### 请求处理器
 
-    // Your business logic here | 您的业务逻辑 | ビジネスロジック
-    // ...
+```zig
+pub export fn hello_handler(req: [*:0]const u8, res: [*:0]const u8, path: [*:0]const u8) callconv(.C) [*:0]const u8 {
+    return "{\"message\": \"Hello, World!\"}";
 }
 ```
 
-### Testing Middleware | 测试中间件 | ミドルウェアテスト
+## 🛡️ 安全特性
+
+- **CORS 支持**: 完整的跨域资源共享配置
+- **JWT 认证**: 内置 JSON Web Token 认证中间件
+- **请求限流**: 防止 API 滥用的限流机制
+- **输入验证**: 安全的输入处理和验证
+
+## 📊 性能特性
+
+- **零拷贝**: 高效的内存管理
+- **异步处理**: 支持高并发请求
+- **中间件缓存**: 智能的中间件执行优化
+- **连接池**: 数据库连接池支持
+
+## 📚 文档
+
+- [📖 API 使用指南](docs/API_USAGE_GUIDE.md) - 详细的 API 使用说明
+- [🏗️ 架构文档](docs/ARCHITECTURE.md) - 系统架构设计
+- [🔧 开发指南](docs/DEVELOPMENT_GUIDE.md) - 开发环境配置和贡献指南
+- [📁 项目结构](docs/PROJECT_STRUCTURE.md) - 项目组织结构说明
+
+## 🎮 在线演示
+
+打开 `examples/clients/demo.html` 在浏览器中体验完整的 API 功能演示。
+
+## 🧪 测试
 
 ```bash
-# Run middleware tests | 运行中间件测试 | ミドルウェアテストを実行
-./middleware_test
+# 运行所有测试
+cargo test
 
-# Test protected endpoints | 测试受保护端点 | 保護されたエンドポイントをテスト
-curl -H "Authorization: Bearer valid_token_12345" \
-     http://127.0.0.1:8080/api/protected
+# 运行集成测试
+./scripts/test_api.sh
 
-# Test CORS preflight | 测试 CORS 预检 | CORS プリフライトをテスト
-curl -X OPTIONS http://127.0.0.1:8080/api/users
+# 性能测试
+zig run examples/zig/performance_test.zig -lc -L./target/release -lhush_demo
 ```
 
-## 🔧 Adding New Routes | 添加新路由 | 新しいルートの追加
+## 🤝 贡献
 
-To add new web endpoints to your application:
+我们欢迎所有形式的贡献！
 
-要为您的应用程序添加新的 Web 端点：
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'Add amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 创建 Pull Request
 
-アプリケーションに新しいWebエンドポイントを追加するには：
+详细的贡献指南请查看 [开发指南](docs/DEVELOPMENT_GUIDE.md)。
 
-1. **Create a handler function in Zig | 在 Zig 中创建处理函数 | Zigでハンドラ関数を作成**:
-   ```zig
-   export fn my_api_handler(method: [*:0]const u8, path: [*:0]const u8, body: [*:0]const u8) callconv(.C) [*:0]const u8 {
-       const method_str = std.mem.span(method);
-       const body_str = std.mem.span(body);
-       
-       const allocator = std.heap.c_allocator;
-       const response = std.fmt.allocPrintZ(allocator, 
-           "{{\"endpoint\":\"my-api\",\"method\":\"{s}\",\"data\":\"{s}\"}}", 
-           .{method_str, body_str}
-       ) catch {
-           return "Error: Memory allocation failed".ptr;
-       };
-       return response.ptr;
-   }
-   ```
+## 📄 许可证
 
-2. **Register the route | 注册路由 | ルートを登録**:
-   ```zig
-   web_server_add_route(server, "POST", "/api/my-endpoint", my_api_handler);
-   ```
+本项目采用 MIT 许可证 - 详情请查看 [LICENSE](LICENSE) 文件。
 
-3. **Rebuild and test | 重新构建和测试 | 再ビルドとテスト**:
-   ```bash
-   ./build.sh
-   ./web_test
-   curl -X POST http://127.0.0.1:8080/api/my-endpoint -d '{"test":"data"}'
-   ```
+## 🙏 致谢
 
-## 🔬 Technical Details | 技术细节 | 技術詳細
-
-- **🔗 FFI Safety | FFI 安全性 | FFI安全性**: Uses C ABI for seamless cross-language compatibility | 使用 C ABI 实现无缝跨语言兼容性 | シームレスなクロス言語互換性のためにC ABIを使用
-- **🧠 Memory Management | 内存管理 | メモリ管理**: Safe memory handling with Rust's ownership model | 使用 Rust 所有权模型进行安全内存处理 | Rustの所有権モデルによる安全なメモリ処理
-- **⚙️ Build System | 构建系统 | ビルドシステム**: Automated linking and cross-platform support | 自动链接和跨平台支持 | 自動リンクとクロスプラットフォームサポート
-- **🌍 Cross-Platform | 跨平台 | クロスプラットフォーム**: Tested on Windows, macOS, and Linux | 在 Windows、macOS 和 Linux 上测试 | Windows、macOS、Linuxでテスト済み
-- **📊 Performance | 性能 | パフォーマンス**: Leverages actix-web's async runtime for high throughput | 利用 actix-web 的异步运行时实现高吞吐量 | 高スループットのためにactix-webの非同期ランタイムを活用
-- **🔒 Type Safety | 类型安全 | 型安全性**: Compile-time guarantees from both Rust and Zig | Rust 和 Zig 的编译时保证 | RustとZigの両方からのコンパイル時保証
-
-## 🤝 Contributing | 贡献 | 貢献
-
-We welcome contributions to make this framework even better! Here's how you can help:
-
-我们欢迎贡献，让这个框架变得更好！您可以这样帮助：
-
-このフレームワークをより良くするための貢献を歓迎します！以下の方法で協力できます：
-
-- 🐛 **Report bugs** | **报告错误** | **バグ報告**: Found an issue? Let us know! | 发现问题？告诉我们！ | 問題を発見しましたか？お知らせください！
-- 💡 **Suggest features** | **建议功能** | **機能提案**: Have ideas for improvements? | 有改进想法？ | 改善のアイデアはありますか？
-- 📝 **Improve documentation** | **改进文档** | **ドキュメント改善**: Help make our docs clearer | 帮助让我们的文档更清晰 | ドキュメントをより明確にするのを手伝ってください
-- 🔧 **Submit pull requests** | **提交拉取请求** | **プルリクエスト提出**: Code contributions welcome! | 欢迎代码贡献！ | コード貢献を歓迎します！
-
-## 📄 License | 许可证 | ライセンス
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-本项目采用 MIT 许可证 - 详情请参阅 [LICENSE](LICENSE) 文件。
-
-このプロジェクトはMITライセンスの下でライセンスされています - 詳細は[LICENSE](LICENSE)ファイルをご覧ください。
-
-## 🗺️ Roadmap | 路线图 | ロードマップ
-
-### ✅ Completed | 已完成 | 完了
-
-- ✅ **HTTP Methods Support** | **HTTP 方法支持** | **HTTPメソッドサポート**: GET, POST, PUT, DELETE | GET、POST、PUT、DELETE | GET、POST、PUT、DELETE
-- ✅ **Request Body Processing** | **请求体处理** | **リクエストボディ処理**: Full POST data support | 完整的 POST 数据支持 | 完全なPOSTデータサポート
-- ✅ **Dynamic Routing System** | **动态路由系统** | **動的ルーティングシステム**: Flexible route registration | 灵活的路由注册 | 柔軟なルート登録
-- ✅ **JSON API Support** | **JSON API 支持** | **JSON APIサポート**: Modern API endpoints | 现代化 API 端点 | モダンなAPIエンドポイント
-- ✅ **Middleware System** | **中间件系统** | **ミドルウェアシステム**: Authentication, logging, CORS, rate limiting | 认证、日志、CORS、限流 | 認証、ログ、CORS、レート制限
-- ✅ **Cross-Platform Build** | **跨平台构建** | **クロスプラットフォームビルド**: Windows, macOS, Linux | Windows、macOS、Linux | Windows、macOS、Linux
-- ✅ **Comprehensive Documentation** | **完整文档** | **包括的なドキュメント**: Multi-language comments | 多语言注释 | 多言語コメント
-
-### 🚧 In Progress | 进行中 | 進行中
-
-- 🔄 **Performance Optimization** | **性能优化** | **パフォーマンス最適化**: Benchmarking and tuning | 基准测试和调优 | ベンチマークと調整
-- 🔄 **Error Handling** | **错误处理** | **エラーハンドリング**: Better error responses | 更好的错误响应 | より良いエラーレスポンス
-
-### 📋 Planned | 计划中 | 計画中
-
-- 🎯 **Database Integration** | **数据库集成** | **データベース統合**: SQL and NoSQL support | SQL 和 NoSQL 支持 | SQLとNoSQLサポート
-- 🎯 **WebSocket Support** | **WebSocket 支持** | **WebSocketサポート**: Real-time communication | 实时通信 | リアルタイム通信
-- 🎯 **Template Engine** | **模板引擎** | **テンプレートエンジン**: HTML rendering | HTML 渲染 | HTMLレンダリング
-- 🎯 **Static File Serving** | **静态文件服务** | **静的ファイル配信**: CSS, JS, images | CSS、JS、图片 | CSS、JS、画像
-- 🎯 **Testing Framework** | **测试框架** | **テストフレームワーク**: Unit and integration tests | 单元和集成测试 | ユニットと統合テスト
+感谢所有为这个项目做出贡献的开发者！
 
 ---
 
-**Happy coding! | 编程愉快！ | ハッピーコーディング！** 🦀⚡
+**快乐编码！** 🎉
 
-*Built with ❤️ using Zig + Rust | 使用 Zig + Rust 用心构建 | Zig + Rustで❤️を込めて構築*
+如有问题或建议，欢迎提交 Issue 或 Pull Request。
